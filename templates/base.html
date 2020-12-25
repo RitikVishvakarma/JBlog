@@ -39,6 +39,18 @@
                     <input class="form-control me-2" name="query" id="query" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Welcome {{request.user}} !
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {% else %}
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-success mx-2" data-bs-toggle="modal" data-bs-target="#loginModel">
                     Login
@@ -46,6 +58,8 @@
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#signupModel">
                     SignUp
                 </button>
+                
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -110,15 +124,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action='/login/' method= 'post'>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="loginusername" name="username" placeholder="Enter your username" Required>
+                            <input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="Enter your username" Required>
                         </div>
                         <div class="mb-3">
-                            <label for="pass1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Enter your password" Required>
+                            <label for="pass" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginpass" name="loginpass" placeholder="Enter your password" Required>
                         </div>
+                        {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
