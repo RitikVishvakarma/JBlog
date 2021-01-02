@@ -21,7 +21,7 @@ def blogPost(request, slug):
         else:
             replyDict[reply.parent.sno].append(reply)
     # print(comments, replies)
-    print(replyDict)
+    # print(replyDict)
     context = {'post':post, 'comments':comments, 'user':request.user, 'replyDict':replyDict}
     return render(request, 'blog/blogPost.html', context)
     # return HttpResponse(f'This is blog: {slug}')
