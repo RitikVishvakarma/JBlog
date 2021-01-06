@@ -2,12 +2,22 @@ from django.shortcuts import render, HttpResponse, redirect
 from blog.models import Post, BlogComment
 from django.contrib import messages
 from blog.templatetags import extras
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 def blogHome(request):
     allPosts = Post.objects.all()
+    paginator = Paginator(allPosts, 3)
+    page = request.GET.get('page')
+    allPosts = paginator.get_page(page)
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+
     # print(allPosts)
-    context = {'allPosts':allPosts}
+    context = {'allPosts':allPosts, 'pages':pages}
     return render(request, 'blog/blogHome.html', context)
 
 def blogPost(request, slug):
