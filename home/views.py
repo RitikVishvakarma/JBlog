@@ -4,9 +4,25 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from blog.models import Post
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 # html pages
 def home(request):
-    return render(request, 'home/home.html')
+    allPosts = Post.objects.all().order_by('-views')
+    paginator = Paginator(allPosts, 3)
+    page = request.GET.get('page')
+    allPosts = paginator.get_page(page)
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+
+    # print(allPosts)
+    context = {'allPosts':allPosts, 'pages':pages}
+    
+    return render(request, 'home/home.html', context)
 
 def about(request):
     return render(request, 'home/about.html')
