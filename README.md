@@ -9,4 +9,3 @@ Features:
 4. Counting viewers on every post.
 5. Django Paginator.
 6. Search for blog.
-Live chat with friends
